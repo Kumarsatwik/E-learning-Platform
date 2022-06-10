@@ -1,0 +1,154 @@
+{% extends "courses/base.html" %}
+{% load static %}
+{% load course_tags %}
+{%load static%}
+{%block title%}
+Courses
+{%endblock%}
+
+
+{%block css%}   
+
+#video_list{
+	position: relative;
+	overflow-y: scroll;
+}
+
+a:hover{
+	text-decoration: none;
+}
+a{
+	color: rgb(61,59,59);
+}
+.active-video-link{
+	color: rgb(206, 202, 196);
+}
+.active-video-link:hover{
+	text-decoration: none;
+	color: rgb(206,202,196);
+}
+.activevideo{
+	background-color: lightgray;
+}
+
+{%endblock%}
+
+{%block content%}
+
+{%block js%}
+<script src="{%static 'js/course.js'%}"></script>
+{%endblock%}
+
+<div class="container-fluid">
+	
+
+	<!-- youtube player -->
+	<div>
+		<br>
+		<div class="card p-3">
+			<h5 class="card-title">{{course.name}}</h5>
+			<br>
+			<div class="row">
+			<div class="col">
+				<div>
+					<iframe id='player' width="100%" height="405" src="https://www.youtube.com/embed/{{video.video_id}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+			</div>
+
+
+
+
+			<!-- list of videos -->
+			<div class="col-3">
+				
+					<ul id="video_list" class="list-group">
+					{% for i in videos %}
+						<li class="list-group-item 
+						{% if i == video %} activevideo {%endif%}
+
+						 "><a class="{%if i == video %} active-video{%endif%}" href="?lecture={{i.serial_number}}">{{i}}</a>
+						 <br>
+						 	{%isenrolled request course as enrolled%}
+						 		{% if not enrolled %}  
+						 			{%if not i.is_preview%}
+										 <small class="badge badge-warning">Premium</small>
+										  {%else%}
+										  <small class=" text-muted badge badge-success">Free</small>
+									{%endif%}
+								 {%endif%}
+
+						</li>
+						{%endfor%}
+					</ul>
+				
+
+			</div>
+				
+			</div>
+		</div>
+		</div>
+		<!-- Prerequisite -->
+		<div class="mt-3 col-9">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Prerequisite</h5>
+					<p class="card-text">
+					{%for pre in course.prerequisite_set.all%}
+					<li class="list-group-item">{{pre.description}}</li>
+					{%endfor%}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Learning -->
+		<div class="mt-3 col-9">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Learning</h5>
+					<p class="card-text">
+					{%for learn in course.learning_set.all%}
+					<li class="list-group-item">{{learn.description}}</li>
+					{%endfor%}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-5 mt-2 mx-3">
+		<form action="{%url 'review' course.id %}" method="POST">
+			<h5>Write Your Review</h5>
+			<label>How do you rate this Course</label>
+			<br>
+			<div class="rate">
+				<input type="radio" name="rating" id="rating10" value="5" requrired><label for="rating10" title="5"></label>
+				<input type="radio" name="rating" id="rating9" value="4.5" requrired><label for="rating10" title="4.5" class="half"></label>
+				<input type="radio" name="rating" id="rating8" value="4" requrired><label for="rating10" title="4"></label>
+				<input type="radio" name="rating" id="rating7" value="3.5" requrired><label for="rating10" title="3.5" class="half"></label>
+				<input type="radio" name="rating" id="rating6" value="3" requrired><label for="rating10" title="3"></label>
+				<input type="radio" name="rating" id="rating5" value="2.5" requrired><label for="rating10" title="2.5" class="half"></label>
+				<input type="radio" name="rating" id="rating4" value="2" requrired><label for="rating10" title="2"></label>
+				<input type="radio" name="rating" id="rating3" value="1.5" requrired><label for="rating10" title="1.5" class="half"></label>
+				<input type="radio" name="rating" id="rating3" value="1" requrired><label for="rating10" title="1"></label>
+				<input type="radio" name="rating" id="rating1" value="0.5" requrired><label for="rating10" title="0.5" class="half"></label>
+			</div>
+			<br>
+			Review Title:
+			<input type="text" class="form-control" name="subject">
+			<br>
+			Review:
+			<textarea name="review" class="form-control" rows="4"></textarea>
+			<br>
+			{%if user.is_authenticated%}
+			<input type="submit" value="Submit Review" class="btn btn-primary">
+			{%else%}
+			<p>You must be logged in to post a review <span><a href="{%url 'login' %}">Login Now</a></span></p>
+			{%endif%}
+		</form>
+	</div>
+
+
+
+{%endblock%}

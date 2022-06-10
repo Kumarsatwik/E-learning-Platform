@@ -1,0 +1,213 @@
+{% extends "courses/base.html" %}
+{%load static%}
+{% load course_tags %}
+{%block title%}
+Courses
+{%endblock%}
+
+{%block css%}
+.image{
+	margin-left:30px;
+	background-size:cover;
+}
+.hover{
+	position:absolute;
+	margin-top:100px;
+	z-index:1;
+	word-wrap:break-word;
+	width:550px;
+	box-shadow:2px 2px 2px 2px #DCDDDF;
+	margin-left:30px;
+	height:180px;
+}
+.fw-bold{
+	font-size:35px;
+	padding-left:30px;
+	padding-top:10px;
+
+}
+.fw-normal{
+	font-size:17px;
+	padding-left:30px;
+	padding-top:10px;
+	padding-right:30px;
+
+}
+.align-items-start{
+	border:1px solid gray;
+	border-radius:5px;
+}
+.align-items-start:hover{
+	background-color:#D8E5E8;
+	cursor:pointer;
+}
+.py-4{
+	margin-left:40px;
+	width:90%;
+}
+.top-pick{
+	font-size:35px;
+	font-weight:600;
+}
+{%endblock%}
+
+{%block content%}
+
+
+
+
+
+<div class="container-fluid">
+	{%if messages%}
+		<script>
+			alert("Already in Wishlist")
+		</script>
+	{%endif%}
+  
+  <div class="container-fluid image">
+  	<div class="hover container">
+  		<h1 class="fw-bold">Knowledge opens doors</h1>
+  		<p class="fw-normal">Start exploring new possibilities for your future. Learn from just ₹455 through April 29.</p>
+  	</div>
+  	<img src="{%static 'image/front.jpg' %}" class="img-fluid">
+  </div>
+
+  <div class="container-fluid">
+  	{% if request.user.is_authenticated %}
+	<h1 class="display-4 my-5 mx-4">Let's Start Learning, {{request.user}}</h1>
+	{%else%}
+	<h1 class="display-4 my-5 mx-4">Let's Start Learning</h1>
+	{%endif%}
+</div>
+
+
+
+
+
+   <!--  <ul class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+    <li data-target="#myCarousel" data-slide-to="4"></li>
+    <li data-target="#myCarousel" data-slide-to="5"></li>
+    </ul>
+
+    
+    <div class="container carousel-inner no-padding" id="owl-demo">
+  	{% for course in courses%}
+  	{%if forloop.counter == 1%}
+      <div class="carousel-item active">
+      	{%else%}
+      		<div class="carousel-item">
+      	{%endif%}
+          <div class="card" style="width: 18rem;">
+            <img src="{{course.thumbnail.url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{course.name}}</h5>
+                <p class="card-text">{{course.description}}</p>
+                <p class="card-text">
+					<p class="card-text m-0 p-0" style="font-size: 23px;">Save {{course.discount}}%
+						<br>
+						<span class="price"><del><i>{{course.price|currency}}</i></del></span>
+						&nbsp;
+						
+					</p>
+				</p>
+            </div>
+          </div>
+       </div>
+       {% endfor %}
+</div>
+</div>
+   
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="row">
+		{% for course in courses%}
+			<div class="col mx-auto">
+				<div class="card mx-auto" style="width: 18rem;">
+					<img src="{{course.thumbnail.url}}" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h5 class="card-title">{{course.name}}</h5>
+						<p class="card-text">{{course.description}}</p>
+						<p class="card-text">
+							<p class="card-text m-0 p-0" style="font-size: 23px;">Save {{course.discount}}%
+								<br>
+								<span class="price"><del><i>{{course.price|currency}}</i></del></span>
+								&nbsp;
+								<span class="font-weight-bold"> {% sellprice course.price course.discount as value%}{{value|currency}}</span>
+							</p>
+						</p>
+					</div>
+					<div class="card-footer p-0">
+						{% isenrolled request course as enrolled %}
+						<div class="row no-gutters ">
+							{%if enrolled %}
+								<div class="col"><a href="/course/{{course.slugs}}" class="btn btn-secondary btn-block">Start Course</a></div>
+							{%else%}
+								<div class="col border-right"><a href="/checkout/{{course.slugs}}" class="btn btn-light btn-block">Enroll Now</a></div>
+								<div class="col"><a href="/course/{{course.slugs}}" class="btn btn-light btn-block">Show More</a></div>
+								<div class="col border-left"><a href="/wishlist/{{course.slugs}}" class="btn btn-light btn-block">Add Wishlist</a></div>
+							{%endif%}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			{%endfor%}
+		</div>
+	</div>
+
+
+
+
+<div class="container-fluid py-4">
+	<h1 class="top-pick">Our top pick for you</h1>
+	 <div class="container-fluid row align-items-start mt-3" >
+		{%for random in randoms%}
+		<div class="col-md-4 p-4">
+			<img src="{{random.thumbnail.url}}" class="img-fluid img-thumbnail" alt="">
+		</div>
+		<div class="col-md-6 p-4">
+			<h1 class="fw-bold">{{random.name}}</h1>
+			<p class="fw-normal">{{random.description}}</p>
+			<p class="fw-normal">Updated {{random.date}}</p>
+			<p class="fw-normal">₹<del>{{random.price}}</del></p><p class="fw-bold">{%sellprice random.price random.discount as value%}</p>
+			<a href="/course/{{random.slugs}}" class="btn btn-success btn-block">Get Details</a>
+		</div>
+		{%endfor%}
+	</div>
+</div>
+
+
+{%block script%}
+<script>
+	$(document).ready(function() { 
+  $("#owl-demo").owlCarousel({ 
+      autoPlay: 1000, //Set AutoPlay to 3 seconds 
+      items : 4,
+      itemsDesktop : [1199,3],
+      itemsDesktopSmall : [979,3] 
+  }); 
+});
+</script>
+
+{%endblock%}
+
+	{%endblock%}
+

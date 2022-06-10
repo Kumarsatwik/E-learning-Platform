@@ -1,0 +1,24 @@
+{% extends "courses/base.html" %}
+{% load static %}
+{% load course_tags %}
+{%load static%}
+{%block title%}
+Signup
+{%endblock%}
+
+{%block content%}
+
+<div class="container">
+	<h1 class="display-1">Signup</h1>
+
+	<div>
+		<form action="/signup" method="POST">
+			{{form.as_p}}
+			{%csrf_token%}
+			<input type="submit"  value="Register" name="">
+		</form>
+	</div>
+</div>
+
+
+{%endblock%}

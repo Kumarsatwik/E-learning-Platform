@@ -1,0 +1,37 @@
+{% extends "courses/base.html" %}
+{% load course_tags %}
+{%block title%}
+My Course
+{%endblock%}
+
+{%block css%}
+{%endblock%}
+
+{%block content%}
+
+	<div class="container">
+		<h1 class="display-6">My Courses</h1>
+		<hr>
+		<div class="row">
+			{%for uc in user_course%}
+				<div class="col mx-auto">
+					<div class="card mx-auto" style="width:18rem;">
+						<img src="{{uc.course.thumbnail.url}}" alt="Card image cap">
+							<div class="card-body">
+								<h5 class="card-title">{{uc.course.name}}</h5>
+							</div>
+									
+									<div class="card-footer p-0">
+										<div class="row no-gutters">
+											<div class="col border-right">
+												<a href="/course/{{uc.course.slugs}}" class="btn btn-light btn-block">Start Course</a>
+											</div>
+										</div>
+									</div>		
+							</div>
+					</div>
+					{%endfor%}
+				</div>
+
+		</div>
+{%endblock%}

@@ -1,0 +1,80 @@
+{%extends 'courses/base.html' %}
+{%load static%}
+{%block content%}
+        <div class="container-fluid">
+            <div class="row p-4">
+                <div id="list-example" class="list-group col-4">
+                    <a class="list-group-item list-group-item-action" href="#list-item-1">My Details</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-3">Wishlist</a>
+                    <a class="list-group-item list-group-item-action" href="#list-item-4">Payment History</a>
+                  </div>
+                  <div data-bs-spy="scroll" style="height: 410px; overflow-y: scroll;" data-bs-target="#list-example" data-bs-offset="0" class="col" class="scrollspy-example" tabindex="0" style="height: 200px;">
+                    <form action="" method="post">
+                    <h4 id="list-item-1">My Details</h4>
+                     <hr>
+                     <span class="fs-1">Name</span>
+                     <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="Username" name="username"  aria-describedby="basic-addon1" value="{{user.name}}">
+                    </div>
+                    <span class="fs-1">Email</span>
+                     <div class="input-group mb-3">
+                      <input type="email" class="form-control" name="emailaddress" placeholder="Enter Email"  aria-describedby="basic-addon1" value="{{user.email}}">
+                    </div>  
+                    <input type="submit" class="btn btn-success form-control" value="Submit">
+                  </form>
+                   
+                    <form action="" method="POST">
+                    <h4 id="list-item-3" class="mt-5">Wishlist</h4>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Course</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">Link</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {%for wish in wishlist%}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{wish.course}}</td>
+                          <td>{{wish.price}}</td>
+                          <td><a href="/course/{{wish.slugs}}">Link</a></td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                    </table>
+                    </form>
+                    <h4 id="list-item-4">Payment History</h4>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Course</th>
+                          <th scope="col">Amount</th>
+                          <th scope="col">Payment Id</th>
+                          <th scope="col">Order Id</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Reciept</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {%for payment in payments%}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{payment.course}}</td>
+                          <td>{{payment.amount}}</td>
+                          <td>{{payment.payment_id}}</td>
+                          <td>{{payment.order_id}}</td>
+                          <td>{{payment.date}}</td>
+                          <td><a class="btn btn-success" href="/download/{{payment.order_id}}">Download</a></td>
+                        </tr>
+                        {%endfor%}
+
+                      </tbody>
+                    </table>
+                  </div>   
+            </div>
+        </div>
+{%endblock%}

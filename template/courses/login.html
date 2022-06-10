@@ -1,0 +1,22 @@
+{% extends "courses/base.html" %}
+{% load static %}
+{% load course_tags %}
+{%load static%}
+{%block title%}
+Login
+{%endblock%}
+{%block content%}
+<div class="container">
+	<h1 class="display-1">Login</h1>
+	<div>
+		<table>
+			<form action="/login" method="post">
+				<tr><td><section>Email Address </section>{{form.username}}</td></tr>
+				<tr><td><section>Password  </section>{{form.password}}</td></tr>
+				
+				<tr><td><input type="submit" value="Login" class="btn btn-success"></td></tr>	
+			</form>
+		</table>
+	</div>
+</div>
+{%endblock%}
