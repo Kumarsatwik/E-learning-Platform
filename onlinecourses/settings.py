@@ -132,6 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-KEY_ID="rzp_test_S33jtIPMIlrvQR"
-KEY_SECRET="eMa4J6qcecsLfAAlzdQMUmZ2"
+KEY_ID="key Id"
+KEY_SECRET="secrate Key"
 
