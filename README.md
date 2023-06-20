@@ -1,1 +1,1 @@
-# E-learning Platform
+# EduFlex (E-learning Platform)
